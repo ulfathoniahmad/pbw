@@ -24,7 +24,11 @@
 			$db->query("INSERT INTO siswa VALUES ('', '$nama', '$jenkel', '$tempat', '$tgl', '$namaortu', '$pekerjaan', '$alamat', '$telepon')") or die ($db->error);
 
 		}
-
+		public function edit($sql)
+		{
+			$db = $this->mysqli->conn;
+			$db->query($sql) or die ($db->error);
+		}
 
 	}
 ?>

@@ -76,10 +76,10 @@
       </div>
     </div>
 
-    <div>
+   <!--  <div>
       <footer class="container-fluid text-center">
         <p>© 2K17. Ahmad Ulfathoni</p>
       </footer>
-    </div>
+    </div> -->
   </body>
 </html>
