@@ -35,22 +35,23 @@
 
 				<div class="col-md-4">
 					
-					<div class="panel panel_default">
-						<div class="panel-body">
-							<form>
-								<div class="text-center">
-									<h4><b>Silahkan Login Terlebih Dahulu</b></h4>
-									<hr>
-								</div>							
+					<div class="panel panel_default" style="background-color: #5cb85c">
+						<div class="panel-head">
+							<div class="text-center">
+								<h4><b>Silahkan Login Terlebih Dahulu</b></h4>
+							</div>
+						</div>
+						<div class="panel-body" style="background-color: white">
+							<form method="POST">						
 								<div class="form-group">
-									<label for="us">Username</label>
-									<input type="text" class="form-control" id="us" placeholder="Username">
+									<label for="user">Username</label>
+									<input type="text" class="form-control" id="user" name="user" placeholder="Username" required>
 								</div>
 								<div class="form-group">
-									<label for="pas">Password</label>
-									<input type="password" class="form-control" id="pas" placeholder="Password">
+									<label for="pass">Password</label>
+									<input type="password" class="form-control" id="pass" name="pass" placeholder="Password" required>
 								</div>
-								<button type="submit" class="btn btn-default">Masuk</button>
+								<input type="submit" class="btn btn-success" id="login" name="login" value="Masuk">
 								<div>
 									<br>
 									<p> Lupa Password <a href="lupa.php">Klik Disini</a></p>

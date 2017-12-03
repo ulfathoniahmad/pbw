@@ -69,7 +69,7 @@ $connection = new Database ($host, $user, $pass, $database);
     <div class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="">SiBeKa</a>
+          <a class="navbar-brand" href="index.php">SiBeKa</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#""><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -101,6 +101,10 @@ $connection = new Database ($host, $user, $pass, $database);
                }
                else if (isset($_GET['data-siswa'])) {
                  include 'data-induk/data-siswa.php';
+                // header("location : data-siswa.php");
+               }
+               else if (isset($_GET['data-ortu'])) {
+                 include 'data-induk/data-ortu.php';
                }
                 elseif (isset($_GET['kelas'])) {
                   include 'data-induk/kelas.php';

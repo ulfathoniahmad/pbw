@@ -5,6 +5,7 @@
 			<li style="background: rgb(0, 0, 0)"><a href="?user" style="padding-left: 33px;"> Data User</a></li>
 			<li style="background: rgb(0, 0, 0)"><a href="?data-guru" style="padding-left: 33px;"><i></i>Data Guru</a></li>
 			<li style="background: rgb(0, 0, 0)"><a href="?data-siswa" style="padding-left: 33px;"><i></i>Data Siswa</a></li>
+			<li style="background: rgb(0, 0, 0)"><a href="?data-ortu" style="padding-left: 33px;"><i></i>Data Ortu</a></li>
 			<li style="background: rgb(0, 0, 0)"><a href="?kelas" style="padding-left: 33px;">Data Kelas</a></li>
 	</div>
 	<li class="active"><a data-toggle="collapse" href="#bk"><span class="glyphicon glyphicon-file"></span> Bimbingan Konseling</a></li>
