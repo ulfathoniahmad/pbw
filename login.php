@@ -1,3 +1,24 @@
+<?php 
+	@session_start();	
+	ob_start();
+	require_once ('config/koneksi.php');
+	require_once ('models/database.php');
+	include "models/m_login.php";
+
+	$connection = new Database ($host, $user, $pass, $database);
+	$queryLogin = new login($connection);
+
+	if (@$_SESSION['admin']){
+		header("location: admin/index.php");
+	} elseif (@$_SESSION['siswa']){
+		header("location: siswa/index.php");
+	}elseif (@$_SESSION['ortu']){
+		header("location: ortu/index.php");
+	}elseif (@$_SESSION['guru']){
+		header("location: guru/index.php");
+	}else{
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -18,8 +39,7 @@
 	    <!-- Custom JS -->
 	    <script src="assets/custom.js"></script>
 
-	</head>
-	
+	</head>	
 	<body background="gambar/bk.jpg">
 		<br>
 		<br>
@@ -42,7 +62,7 @@
 							</div>
 						</div>
 						<div class="panel-body" style="background-color: white">
-							<form method="POST">						
+							<form action="" method="POST">						
 								<div class="form-group">
 									<label for="user">Username</label>
 									<input type="text" class="form-control" id="user" name="user" placeholder="Username" required>
@@ -51,19 +71,51 @@
 									<label for="pass">Password</label>
 									<input type="password" class="form-control" id="pass" name="pass" placeholder="Password" required>
 								</div>
-								<input type="submit" class="btn btn-success" id="login" name="login" value="Masuk">
-								<div>
+								<input type="submit" class="btn btn-success" id="masuk" name="masuk" value="Masuk">
+								<!-- <div>
 									<br>
 									<p> Lupa Password <a href="lupa.php">Klik Disini</a></p>
-								</div>
+								</div> -->
 							</form>
+							<?php
+								$masuk = @$_POST['masuk'];	
+
+								if ($masuk) {
+									$user = $connection->conn->real_escape_string($_POST['user']);
+	      							$pass = $connection->conn->real_escape_string($_POST['pass']);
+
+									$login = $queryLogin->login($user,$pass);
+									$data = $login->fetch_array();
+
+									if ($login->num_rows >= 1) {
+										if($data['level'] == "admin"){
+											@$_SESSION['admin'] = $data['id_user'];
+											header("location: admin/index.php");
+										} elseif ($data['level'] == "siswa") {
+											@$_SESSION['siswa'] = $data['id_user'];
+											header("location: siswa/index.php");
+										} elseif ($data['level'] == "ortu") {
+											@$_SESSION['ortu'] = $data['id_user'];
+											header("location: ortu/index.php");
+										} elseif ($data['level'] == "guru") {
+											@$_SESSION['guru'] = $data['id_user'];
+											header("location: guru/index.php");
+										}
+									}else {
+									?> <script type="text/javascript">alert("Username atau Password Salah")</script>
+									<?php
+									}
+								}
+							?>
 						</div>
-						
+
 					</div>
-					
-				</div>
-				
+				</div>			
 			</div>
 		</div>
 	</body>
 </html>
+
+<?php 
+}
+ ?>

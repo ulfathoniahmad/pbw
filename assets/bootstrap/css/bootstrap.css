@@ -239,7 +239,7 @@ th {
     page-break-after: avoid;
   }
   .navbar {
-    display: none;
+    display: none;;
   }
   .btn > .caret,
   .dropup > .btn > .caret {
@@ -4492,6 +4492,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-right: 0;
   }
 }
+#f8f8f8
 .navbar-default {
   background-color: #f8f8f8;
   border-color: #e7e7e7;
@@ -4589,7 +4590,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #222;
+  background-color: #009933;
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {

@@ -75,7 +75,7 @@ if(@$_GET['act'] == '') {
 		  </div>
 		</div>
 	</div>
-		<table class="table table-striped">
+		<table class="table table-striped" style="text-align: center;">
 				<tr>
 					<th>No.</th>
 					<th>Nama Ortu</th>

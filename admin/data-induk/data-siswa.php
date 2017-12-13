@@ -11,11 +11,11 @@ if(@$_GET['act'] == '') {
 		<li><span class="glyphicon glyphicon-list-alt"></span> Data Siswa</li>
 	</ol>
 	<div class="col-sm-2">
-		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-ortu" name="tambahdata"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
+		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-siswa" name="tambahdata"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
 		<br><br>
 
 
-		<div id="create-ortu" class="modal fade" role="dialog">
+		<div id="create-siswa" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">

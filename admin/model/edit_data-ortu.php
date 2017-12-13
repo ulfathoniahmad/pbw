@@ -2,7 +2,7 @@
 ob_start();
 require_once ('../../config/koneksi.php');
 require_once ('../../models/database.php');
-include "../model/m_data-siswa.php";
+include "../model/m_data-ortu.php";
 
 $connection = new Database ($host, $user, $pass, $database);
 $ssw = new dataSiswa($connection);

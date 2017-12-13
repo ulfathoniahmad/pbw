@@ -1,4 +1,4 @@
-<div class="nav nav-pills nav-stacked">
+<div class="nav nav-sidebar" style="padding-left: 10px;">
 	<li class="active"><a href="?dasboard"><span class="glyphicon glyphicon-dashboard"></span> Dasboard</a></li>
 	<li class="active"><a data-toggle="collapse" href="#datamaster"><span class="glyphicon glyphicon-list-alt"></span> Data Master</a></li>
 	<div id="datamaster" class="panel-collapse collapse nav nav-pills nav-stacked" >
