@@ -8,12 +8,12 @@
 			$this->mysqli = $conn;
 		}
 
-		public function read($NIS = null)
+		public function read($posisi,$batas)
 		{
 			$db = $this->mysqli->conn;
 			$sql = "SELECT * from siswa";
-			if ($NIS != null) {
-				$sql .= " WHERE NIS = $NIS";
+			if ($posisi != null || $batas != null) {
+				$sql .= " LIMIT $posisi,$batas";
 			}
 			$query = $db->query($sql) or die ($db->error);
 			return $query;
@@ -21,6 +21,7 @@
 		public function create($nama, $jenkel, $tempat, $tgl)
 		{
 			$db = $this->mysqli->conn;
+			// $db->query("INSERT INTO siswa (NIS, nama, kelamin, tempatLahir, tglLahir, password) VALUES (NULL, 'Sigid Bima Wisnu', 'Laki-Laki', 'Ponorogo', '2017-12-05', 'sigid')") or die ($db->error);
 			$db->query("INSERT INTO siswa VALUES ('', '$nama', '$jenkel', '$tempat', '$tgl')") or die ($db->error);
 
 		}

@@ -34,10 +34,7 @@
 	    <!-- jQuery lokal -->
 	    <script src="assets/jquery/jquery.min.js"></script>
 	 
-	    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-	    
-	    <!-- Custom JS -->
-	    <script src="assets/custom.js"></script>
+	    <script src="assets/bootstrap/js/bootstrap.js"></script>
 
 	</head>	
 	<body background="gambar/bk.jpg">
@@ -78,6 +75,7 @@
 								</div> -->
 							</form>
 							<?php
+							
 								$masuk = @$_POST['masuk'];	
 
 								if ($masuk) {

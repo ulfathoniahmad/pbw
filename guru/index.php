@@ -1,3 +1,27 @@
+<?php 
+@session_start();
+ob_start();
+
+require_once ('../config/koneksi.php');
+require_once ('../models/database.php');
+$timeout = 10; // Set timeout menit
+$logout_redirect_url = "../login.php"; // Set logout URL
+
+$timeout = $timeout * 60; // Ubah menit ke detik
+if (isset($_SESSION['start_time'])) {
+    $elapsed_time = time() - $_SESSION['start_time'];
+    if ($elapsed_time >= $timeout) {
+        session_destroy();
+        echo "<script>alert('Session Anda Telah Habis!'); window.location = '$logout_redirect_url'</script>";
+    }
+}
+$_SESSION['start_time'] = time();
+
+$connection = new Database ($host, $user, $pass, $database);
+
+if (@$_SESSION['admin'] || @$_SESSION['siswa']|| @$_SESSION['ortu'] || @$_SESSION['guru']){
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,14 +31,24 @@
     <title>Guru BK</title>
 
     <!-- css -->
-    <link rel="stylesheet" type="text/css" href="../assets/menu-admin-style.css">
     <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../assets/dataTables/datatables.css">
     
     
     <!-- jS -->
-    <script src="../assets/kustom.js"></script>
     <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/dataTables/datatables.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#cari").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#isitabel tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
 
     <style>
         .row.content {height: 500px}
@@ -94,3 +128,11 @@
     </div> -->
   </body>
 </html>
+
+<?php 
+  } else {
+  header("location: ../login.php");
+  
+  }
+
+?>

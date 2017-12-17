@@ -33,12 +33,23 @@ if (@$_SESSION['admin'] || @$_SESSION['siswa']|| @$_SESSION['ortu'] || @$_SESSIO
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../assets/dataTables/datatables.css">
     
     
     <!-- jS -->
-    <script src="../assets/kustom.js"></script>
     <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/dataTables/datatables.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#cari").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#isitabel tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
 
     <style>
         .row.content {height: 550px}

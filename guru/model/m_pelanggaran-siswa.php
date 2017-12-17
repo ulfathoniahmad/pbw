@@ -1,5 +1,5 @@
 <?php  
-	class dataGuru
+	class dataSiswa
 	{
 		private $mysqli;
 
@@ -8,20 +8,20 @@
 			$this->mysqli = $conn;
 		}
 
-		public function read($posisi, $batas)
+		public function read($posisi,$batas)
 		{
 			$db = $this->mysqli->conn;
-			$sql = "SELECT * from guru";
+			$sql = "SELECT * from siswa";
 			if ($posisi != null || $batas != null) {
 				$sql .= " LIMIT $posisi,$batas";
 			}
 			$query = $db->query($sql) or die ($db->error);
 			return $query;
 		}
-		public function create($namaGuru, $jenkel, $alamat, $telepon)
+		public function create($nama, $jenkel, $tempat, $tgl)
 		{
 			$db = $this->mysqli->conn;
-			$db->query("INSERT INTO guru VALUES ('', '$namaGuru', '$jenkel', '$alamat', '$telepon')") or die ($db->error);
+			$db->query("INSERT INTO siswa VALUES ('', '$nama', '$jenkel', '$tempat', '$tgl')") or die ($db->error);
 
 		}
 		public function edit($sql)
@@ -30,11 +30,11 @@
 			$db->query($sql) or die ($db->error);
 		}
 
-		public function delete($NIP,$subs)
+		public function delete($NIS,$subs)
 		{
 			$db = $this->mysqli->conn;
-			$db->query("DELETE FROM guru WHERE NIP = $NIP") or die ($db->error);
-			$db->query("ALTER TABLE guru AUTO_INCREMENT = $subs") or die ($db->error);
+			$db->query("DELETE FROM siswa WHERE NIS = $NIS") or die ($db->error);
+			$db->query("ALTER TABLE siswa AUTO_INCREMENT = $subs") or die ($db->error);
 
 
 		}

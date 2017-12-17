@@ -1,3 +1,10 @@
+<?php 
+include "model/m_pelanggaran-siswa.php";
+$pelanggaran = new dataPelanggaranSiswa($connection);
+
+if(@$_GET['act'] == '') {
+ ?>
+
 <div class="col-sm-12">
 	<ol class="breadcrumb">
 		<li><a href="#"><span class="glyphicon glyphicon-file"></span> Bimbingan Konseling</a></li>
@@ -121,3 +128,10 @@
 			</tbody>		
 		</table>
 </div>
+
+<?php
+} else if (@$_GET['act'] == 'delete') {
+
+	$ssw->delete($_GET['id'],substr($_GET['id'],-1));
+	header("location: ?pelanggaran-siswa");
+}  ?>

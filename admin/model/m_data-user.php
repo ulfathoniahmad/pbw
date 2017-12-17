@@ -8,12 +8,12 @@
 			$this->mysqli = $conn;
 		}
 
-		public function read($id_user = null)
+		public function read($posisi,$batas)
 		{
 			$db = $this->mysqli->conn;
 			$sql = "SELECT * from user";
-			if ($id_user != null) {
-				$sql .= " WHERE id_user = $id_user";
+			if ($posisi != null || $batas != null) {
+				$sql .= " LIMIT $posisi,$batas";
 			}
 			$query = $db->query($sql) or die ($db->error);
 			return $query;
@@ -34,7 +34,7 @@
 		{
 			$db = $this->mysqli->conn;
 			$db->query("DELETE FROM user WHERE id_user = $id_user") or die ($db->error);
-			$db->query("ALTER TABLE user AUTO_INCREMENT = $subs") or die ($db->error);
+			$db->query("ALTER TABLE user AUTO_INCREMENT = 1") or die ($db->error);
 
 
 		}

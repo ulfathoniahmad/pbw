@@ -9,9 +9,77 @@ if(@$_GET['act'] == '') {
 	<ol class="breadcrumb" style="border-radius: 0px">
 		<li><span class="glyphicon glyphicon-list-alt"></span> Data Guru</li>
 	</ol>
-		<div class="col-sm-2">
-		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-guru"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
-		<br><br>
+	<div class="col-sm-2">
+		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-guru"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>		
+	</div>
+	<div class="col-sm-10" >
+		<input class="form-control" type="text" name="cari" id="cari" placeholder="Search...." style="float: right; width: 150px;">
+	</div>
+		<table class="table table-striped" id="tabel">
+			<thead>				
+				<tr>
+					<th>No.</th>
+					<th>NIP</th>
+					<th>Nama</th>
+					<th>Jenis Kelamin</th>
+					<th>Alamat</th>
+					<th>telepone</th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+					$no =1;
+					$batas = 7;
+					$hal = @$_GET['hal'];
+					if(empty($hal)){
+						$posisi = 0;
+						$hal = 1;
+					} else{
+						$posisi = ($hal-1) * $batas;
+					}
+					$read = $guru->read($posisi,$hal);
+					while ($data = $read->fetch_object()) {
+				 	?>
+				<tr>
+					<td align="center"><?php echo $no++; ?></td>
+					<td><?php echo $data->NIP; ?></td>
+					<td><?php echo $data->namaGuru; ?></td>
+					<td><?php echo $data->jenisKelamin; ?></td>
+					<td><?php echo $data->alamat;?></td>
+					<td><?php echo $data->telepon;?></td>
+					<td align="center">
+						<a id="edit" data-toggle="modal" data-target="#edit-guru" data-induk="<?php echo $data->NIP; ?>" data-nama="<?php echo $data->namaGuru; ?>" data-kelamin="<?php echo $data->jenisKelamin; ?>" data-alamat="<?php echo $data->alamat;?>" data-telepon="<?php echo $data->telepon; ?>" >
+							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
+						</a>
+					</td>
+					<td>
+						<a href="?data-guru&act=delete&id=<?php echo $data->NIP;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
+						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
+						</a>
+					</td>	
+				</tr>
+			<?php
+			}?>
+			</tbody>		
+		</table>
+		<div class="pagination-container" align="center">
+		<nav>
+			<ul class="pagination">
+			<?php 
+				$jml = $guru->read(null, null)->num_rows;
+				$jml_hal = ceil($jml / $batas);
+				for ($i=1; $i <= $jml_hal ; $i++) { 
+					if ($i == $hal) {
+						echo "<li class='active'><a>$i</a></li>";					
+					} else{						
+						echo "<li><a href='?jenis-pelanggaran&hal=$i'>$i</a></li>";	
+					}
+				}
+			?>
+			</ul>
+		</nav>
+	</div>
 
 		<!-- Modal Create -->
 		<div id="create-guru" class="modal fade" role="dialog">
@@ -62,46 +130,7 @@ if(@$_GET['act'] == '') {
 		    </div>
 		  </div>
 		</div>
-	</div>
-		<table class="table table-striped">
-
-				<tr>
-					<th>No.</th>
-					<th>NIP</th>
-					<th>Nama</th>
-					<th>Jenis Kelamin</th>
-					<th>Alamat</th>
-					<th>telepone</th>
-					<th></th>
-				</tr>
-			<?php 
-					$no =1;
-					$read = $guru->read();
-					while ($data = $read->fetch_object()) {
-				 	?>
-				<tr>
-					<td align="center"><?php echo $no++; ?></td>
-					<td><?php echo $data->NIP; ?></td>
-					<td><?php echo $data->namaGuru; ?></td>
-					<td><?php echo $data->jenisKelamin; ?></td>
-					<td><?php echo $data->alamat;?></td>
-					<td><?php echo $data->telepon;?></td>
-					<td align="center">
-						<a id="edit" data-toggle="modal" data-target="#edit-guru" data-induk="<?php echo $data->NIP; ?>" data-nama="<?php echo $data->namaGuru; ?>" data-kelamin="<?php echo $data->jenisKelamin; ?>" data-alamat="<?php echo $data->alamat;?>" data-telepon="<?php echo $data->telepon; ?>" >
-							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
-						</a>
-					</td>
-					<td>
-						<a href="?data-guru&act=delete&id=<?php echo $data->NIP;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
-						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
-						</a>
-					</td>	
-				</tr>
-			<?php
-			}?>				
-				
-		</table>
-
+		
 		<!-- Modal Edit -->
 		<div id="edit-guru" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
@@ -142,7 +171,6 @@ if(@$_GET['act'] == '') {
 			    </div>
 			  </div>
 			</div>
-   			<script src="../assets/jquery/jquery.min.js"></script>
 			<script type="text/javascript">
 				$(document).on("click", "#edit", function () {
 

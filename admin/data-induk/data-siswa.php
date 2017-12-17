@@ -11,10 +11,79 @@ if(@$_GET['act'] == '') {
 		<li><span class="glyphicon glyphicon-list-alt"></span> Data Siswa</li>
 	</ol>
 	<div class="col-sm-2">
-		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-siswa" name="tambahdata"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
-		<br><br>
+		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-siswa"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>		
+	</div>
+	<div class="col-sm-10" >
+		<input class="form-control" type="text" name="cari" id="cari" placeholder="Search...." style="float: right; width: 150px;">
+	</div>
+		<table class="table table-striped" id="tabel">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>NIS</th>
+					<th>Nama</th>
+					<th>Jenis Kelamin</th>
+					<th>Tempat, Tanggal Lahir</th>	
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="isitabel">
+				<?php 
+					$no =1;
+					$batas = 7;
+					$hal = @$_GET['hal'];
+					if(empty($hal)){
+						$posisi = 0;
+						$hal = 1;
+					} else{
+						$posisi = ($hal-1) * $batas;
+					}
+					$read = $ssw->read($posisi,$batas);
+					while ($data = $read->fetch_object()) {
+				 	?>
+				<tr>
+					<td align="center"><?php echo $no++; ?></td>
+					<td><?php echo $data->NIS; ?></td>
+					<td><?php echo $data->nama; ?></td>
+					<td><?php echo $data->kelamin; ?></td>
+					<td><?php echo $data->tempatLahir.', ';?>
+						<?php echo $data->tglLahir; ?>
+					</td>
+					<td align="center">
+						<a id="edit" data-toggle="modal" data-target="#edit-siswa" data-induk="<?php echo $data->NIS; ?>" data-nama="<?php echo $data->nama; ?>" data-kelamin="<?php echo $data->kelamin; ?>" data-tempat="<?php echo $data->tempatLahir;?>" data-tgl="<?php echo $data->tglLahir; ?>" >
+							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
+						</a>
+					</td>
+					<td>
+						<a href="?data-siswa&act=delete&id=<?php echo $data->NIS;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
+						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
+						</a>
+					</td>	
+				</tr>
+			<?php
+			}?>	
+			</tbody>
+		</table>
+		<div class="pagination-container" align="center">
+			<nav>
+				<ul class="pagination">
+				<?php 
+					$jml = $ssw->read(null, null)->num_rows;
+					$jml_hal = ceil($jml / $batas);
+					for ($i=1; $i <= $jml_hal ; $i++) { 
+						if ($i == $hal) {
+							echo "<li class='active'><a>$i</a></li>";					
+						} else{						
+							echo "<li><a href='?jenis-pelanggaran&hal=$i'>$i</a></li>";	
+						}
+					}
+				?>
+				</ul>
+			</nav>
+		</div>
 
-
+		<!-- modal create -->
 		<div id="create-siswa" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -60,45 +129,8 @@ if(@$_GET['act'] == '') {
 		    </div>
 		  </div>
 		</div>
-	</div>
-		<table class="table table-striped">
-				<tr>
-					<th>No.</th>
-					<th>NIS</th>
-					<th>Nama</th>
-					<th>Jenis Kelamin</th>
-					<th>Tempat, Tanggal Lahir</th>	
-					<th></th>
-					<th></th>
-				</tr>
-				<?php 
-					$no =1;
-					$read = $ssw->read();
-					while ($data = $read->fetch_object()) {
-				 	?>
-				<tr>
-					<td align="center"><?php echo $no++; ?></td>
-					<td><?php echo $data->NIS; ?></td>
-					<td><?php echo $data->nama; ?></td>
-					<td><?php echo $data->kelamin; ?></td>
-					<td><?php echo $data->tempatLahir.', ';?>
-						<?php echo $data->tglLahir; ?>
-					</td>
-					<td align="center">
-						<a id="edit" data-toggle="modal" data-target="#edit-siswa" data-induk="<?php echo $data->NIS; ?>" data-nama="<?php echo $data->nama; ?>" data-kelamin="<?php echo $data->kelamin; ?>" data-tempat="<?php echo $data->tempatLahir;?>" data-tgl="<?php echo $data->tglLahir; ?>" >
-							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
-						</a>
-					</td>
-					<td>
-						<a href="?data-siswa&act=delete&id=<?php echo $data->NIS;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
-						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
-						</a>
-					</td>	
-				</tr>
-			<?php
-			}?>	
-		</table>
 
+		<!-- modal edit -->
 		<div id="edit-siswa" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -135,7 +167,6 @@ if(@$_GET['act'] == '') {
 			    </div>
 			  </div>
 			</div>
-   			<script src="../assets/jquery/jquery.min.js"></script>
 			<script type="text/javascript">
 				$(document).on("click", "#edit", function () {
 

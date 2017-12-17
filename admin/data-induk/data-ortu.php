@@ -13,8 +13,81 @@ if(@$_GET['act'] == '') {
 	<div class="col-sm-2">
 		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-ortu" name="tambahdata"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
 		<br><br>
+	</div>
+		<div class="col-sm-10" >
+		<input class="form-control" type="text" name="cari" id="cari" placeholder="Search...." style="float: right; width: 150px;">
+	</div>
 
+		<table class="table table-striped" id="tabel">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Nama Ortu</th>
+					<th>Pekerjaan</th>
+					<th>Alamat</th>	
+					<th>No. Telepon</th>
+					<th>NIS</th>
+					<th>Nama Siswa</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="isitabel">
+				<?php 
+					$no =1;
+					$batas = 7;
+					$hal = @$_GET['hal'];
+					if(empty($hal)){
+						$posisi = 0;
+						$hal = 1;
+					} else{
+						$posisi = ($hal-1) * $batas;
+					}
+					$read = $ortu->read($posisi,$batas);
+					while ($data = $read->fetch_object()) {
+				 	?>
+				<tr>
+					<td align="center"><?php echo $no++; ?></td>
+					<td><?php echo $data->namaOrtu; ?></td>
+					<td><?php echo $data->pekerjaan; ?></td>
+					<td><?php echo $data->alamat;?></td>
+					<td><?php echo $data->teleponOrtu;?></td>
+					<td><?php echo $data->NIS; ?></td>
+					<td><?php echo $data->nama; ?></td>
+					<td align="center">
+						<a id="edit" data-toggle="modal" data-target="#edit-ortu" data-induk="<?php echo $data->NIS; ?>" data-ortu="<?php echo $data->namaOrtu; ?>" data-pekerjaan="<?php echo $data->pekerjaan; ?>" data-alamat="<?php echo $data->alamat;?>" data-telepon="<?php echo $data->teleponOrtu; ?>" >
+							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
+						</a>
+					</td>
+					<td>	
+						<a href="?data-ortu&act=delete&id=<?php echo $data->NIS;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
+						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
+						</a>
+					</td>	
+				</tr>
+			<?php
+			}?>	
+		</tbody>
+		</table>
+		<div class="pagination-container" align="center">
+			<nav>
+				<ul class="pagination">
+				<?php 
+					$jml = $ortu->read(null, null)->num_rows;
+					$jml_hal = ceil($jml / $batas);
+					for ($i=1; $i <= $jml_hal ; $i++) { 
+						if ($i == $hal) {
+							echo "<li class='active'><a>$i</a></li>";					
+						} else{						
+							echo "<li><a href='?jenis-pelanggaran&hal=$i'>$i</a></li>";	
+						}
+					}
+				?>
+				</ul>
+			</nav>
+		</div>
 
+		<!-- Create ortu -->
 		<div id="create-ortu" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -74,48 +147,9 @@ if(@$_GET['act'] == '') {
 		    </div>
 		  </div>
 		</div>
-	</div>
-		<table class="table table-striped" style="text-align: center;">
-				<tr>
-					<th>No.</th>
-					<th>Nama Ortu</th>
-					<th>Pekerjaan</th>
-					<th>Alamat</th>	
-					<th>No. Telepon</th>
-					<th>NIS</th>
-					<th>Nama Siswa</th>
-					<th></th>
-					<th></th>
-				</tr>
-				<?php 
-					$no =1;
-					$read = $ortu->read();
-					while ($data = $read->fetch_object()) {
-				 	?>
-				<tr>
-					<td align="center"><?php echo $no++; ?></td>
-					<td><?php echo $data->namaOrtu; ?></td>
-					<td><?php echo $data->pekerjaan; ?></td>
-					<td><?php echo $data->alamat;?></td>
-					<td><?php echo $data->teleponOrtu;?></td>
-					<td><?php echo $data->NIS; ?></td>
-					<td><?php echo $data->nama; ?></td>
-					<td align="center">
-						<a id="edit" data-toggle="modal" data-target="#edit-ortu" data-induk="<?php echo $data->NIS; ?>" data-ortu="<?php echo $data->namaOrtu; ?>" data-pekerjaan="<?php echo $data->pekerjaan; ?>" data-alamat="<?php echo $data->alamat;?>" data-telepon="<?php echo $data->teleponOrtu; ?>" >
-							<button class="btn btn-primary btn-xs" href="" title="edit"><span class="glyphicon glyphicon-edit"></span> | Edit</button>
-						</a>
-					</td>
-					<td>	
-						<a href="?data-ortu&act=delete&id=<?php echo $data->NIS;?>" onclick="return confirm ('Apakah Anda Yakin Menghapus Data Ini?')">
-						<button class="btn btn-danger btn-xs" href="" title="delete"><span class="glyphicon glyphicon-remove"></span> | Delete</button>
-						</a>
-					</td>	
-				</tr>
-			<?php
-			}?>	
-		</table>
 
 
+		<!-- edit ortu -->
 		<div id="edit-ortu" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -150,7 +184,6 @@ if(@$_GET['act'] == '') {
 			    </div>
 			  </div>
 			</div>
-   			<script src="../assets/jquery/jquery.min.js"></script>
 			<script type="text/javascript">
 				$(document).on("click", "#edit", function () {
 

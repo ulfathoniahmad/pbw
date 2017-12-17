@@ -11,57 +11,13 @@ if(@$_GET['act'] == '') {
 		<li><span class="glyphicon glyphicon-list-alt"></span> Data User</li>
 	</ol>
 	<div class="col-sm-2">
-	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-user"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
-	<br>
-	<br>
-
-	<div id="create-user" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title">Create New Data</h4>
-	      </div>
-	      <form method="post" enctype="multipart/form-data">
-	      	<div class="modal-body">
-	      		<div class="form-group">
-	      			<label class="control-label" for="uname">Username:</label>
-	      			<input type="text" name="uname" class="form-control" id="uname" required>
-	      		</div>
-			    <div class="form-group">
-			    	<label class="control-label" for="pass">Password:</label>
-      				<input type="text" name="pass" class="form-control" id="pass" required>
-			    </div>
-			    <div class="form-group">
-			    	<label class="control-label" for="level">Level:</label>
-			      	<input type="text" name="level" class="form-control" id="level" required>
-			    </div>
-			    <div class="form-group">
-			    	<label class="control-label" for="level">Nama:</label>
-			      	<input type="text" name="nama" class="form-control" id="nama" required>
-			    </div>
-	      	</div>
-	      	<div class="modal-footer">
-	        <input type="submit" class="btn btn-success" name="insert" value="Submit"> 
-	        <button type="reset" class="btn btn-danger">Reset</button>
-	      	</div>
-	      	<?php       	
-	      	if(@$_POST['insert']) {
-	      		$nama =$connection->conn->real_escape_string($_POST['nama']);
-	      		$username =$connection->conn->real_escape_string($_POST['uname']);
-	      		$password =$connection->conn->real_escape_string($_POST['pass']);
-	      		$level =$connection->conn->real_escape_string($_POST['level']);
-
-	      		$user->create($username, $password, $level, $nama);
-	      		header("location: ?user");
-	      	}
-	       	?>
-	      </form>	      
-	    </div>
-	  </div>
+		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-user"><span class="glyphicon glyphicon-plus"></span> Add New Data</button>
 	</div>
+	<div class="col-sm-10" >
+		<input class="form-control" type="text" name="cari" id="cari" placeholder="Search...." style="float: right; width: 150px;">
 	</div>
-		<table class="table table-striped">
+		<table class="table table-striped" id="tabel">
+			<thead>
 				<tr>
 					<td>ID User</th>
 					<td>Username</td>
@@ -71,9 +27,20 @@ if(@$_GET['act'] == '') {
 					<td></td>
 					<td></td>
 				</tr>
+			</thead>
+
+			<tbody id="isitabel"> 
 				<?php 
 					$no =1;
-					$read = $user->read();
+					$batas = 7;
+					$hal = @$_GET['hal'];
+					if(empty($hal)){
+						$posisi = 0;
+						$hal = 1;
+					} else{
+						$posisi = ($hal-1) * $batas;
+					}
+					$read = $user->read($posisi,$batas);
 					while ($data = $read->fetch_object()) {
 				 	?>
 				<tr>
@@ -94,9 +61,75 @@ if(@$_GET['act'] == '') {
 					</td>	
 				</tr>
 			<?php
-			}?>					
+			}?>
+			</tbody>					
 		</table>
+		<div class="pagination-container" align="center">
+			<nav>
+				<ul class="pagination">
+				<?php 
+					$jml = $user->read(null, null)->num_rows;
+					$jml_hal = ceil($jml / $batas);
+					for ($i=1; $i <= $jml_hal ; $i++) { 
+						if ($i == $hal) {
+							echo "<li class='active'><a>$i</a></li>";					
+						} else{						
+							echo "<li><a href='?jenis-pelanggaran&hal=$i'>$i</a></li>";	
+						}
+					}
+				?>
+				</ul>
+			</nav>
+		</div>
 
+			<!-- modal create -->
+			<div id="create-user" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Create New Data</h4>
+			      </div>
+			      <form method="post" enctype="multipart/form-data">
+			      	<div class="modal-body">
+			      		<div class="form-group">
+			      			<label class="control-label" for="uname">Username:</label>
+			      			<input type="text" name="uname" class="form-control" id="uname" required>
+			      		</div>
+					    <div class="form-group">
+					    	<label class="control-label" for="pass">Password:</label>
+		      				<input type="text" name="pass" class="form-control" id="pass" required>
+					    </div>
+					    <div class="form-group">
+					    	<label class="control-label" for="level">Level:</label>
+					      	<input type="text" name="level" class="form-control" id="level" required>
+					    </div>
+					    <div class="form-group">
+					    	<label class="control-label" for="level">Nama:</label>
+					      	<input type="text" name="nama" class="form-control" id="nama" required>
+					    </div>
+			      	</div>
+			      	<div class="modal-footer">
+			        <input type="submit" class="btn btn-success" name="insert" value="Submit"> 
+			        <button type="reset" class="btn btn-danger">Reset</button>
+			      	</div>
+			      	<?php       	
+			      	if(@$_POST['insert']) {
+			      		$nama =$connection->conn->real_escape_string($_POST['nama']);
+			      		$username =$connection->conn->real_escape_string($_POST['uname']);
+			      		$password =$connection->conn->real_escape_string($_POST['pass']);
+			      		$level =$connection->conn->real_escape_string($_POST['level']);
+
+			      		$user->create($username, $password, $level, $nama);
+			      		header("location: ?user");
+			      	}
+			       	?>
+			      </form>	      
+			    </div>
+			  </div>
+			</div>
+
+ 		<!-- modal edit -->
 		<div id="edit-user" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -136,7 +169,7 @@ if(@$_GET['act'] == '') {
 			    </div>
 			  </div>
 			</div>
-   			<script src="../assets/jquery/jquery.min.js"></script>
+   			<!-- <script src="../assets/jquery/jquery.min.js"></script> -->
 			<script type="text/javascript">
 				$(document).on("click", "#edit", function () {
 

@@ -8,12 +8,12 @@
 			$this->mysqli = $conn;
 		}
 
-		public function read($idKelas = null)
+		public function read($posisi,$batas)
 		{
 			$db = $this->mysqli->conn;
 			$sql = "SELECT * from kelas";
-			if ($idKelas != null) {
-				$sql .= " WHERE idKelas = $idKelas";
+			if ($posisi != null || $batas != null) {
+				$sql .= " LIMIT $posisi,$batas";
 			}
 			$query = $db->query($sql) or die ($db->error);
 			return $query;
